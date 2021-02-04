@@ -1,0 +1,152 @@
+{% load static %} {% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title> {{ title }} </title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link href="{% static 'css/mdb/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/mdb/mdb.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/mdb/style.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/mdb/mdb.lite.min.css'%}" rel="stylesheet">
+  <link href="{% static 'css/styles.css'%}" rel="stylesheet">
+</head>
+
+<body>
+{% if messages %}
+  {% for message in messages %}
+    <div id="msg" class="msg
+    {% if message.level == 20 %} 
+      info
+    {% elif message.level == 25 %} 
+      success
+    {% elif message.level == 40 %} 
+      error
+    {% endif %} 
+      ">
+        <p> {{message|title}} </p>
+       <button class="close" onclick=" document.getElementById('msg').style.display = 'none'"> &times; </button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+  <!-- Navbar -->
+    
+  <nav class="navbar navbar-dark fixed-top navbar-expand-lg navbar-light scrolling-navbar">
+    <div class="container">
+
+      <!-- Brand -->
+      <a class="navbar-brand waves-effect" href="{% url 'store:store' %}">
+        <strong class="blue-text"> Greengo </strong>
+      </a>
+
+      <!-- Collapse -->
+      <button class="navbar-toggler text-white " type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Left -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link waves-effect" href="{% url 'store:store' %}"> Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+
+
+        <!-- Right -->
+        <ul class="navbar-nav nav-flex-icons" style="
+          margin-top: 5px;
+        ">
+            <li class="nav-item">
+              <a class="border rounded nav-link waves-effect" href="{% url 'store:cart' %}">
+                <span class="badge red z-depth-1 mr-1"> {{cart.count}} </span>
+                <i class="fas fa-shopping-stores"></i>
+                <span class="clearfix d-sm-inline-block"> Cart </span>
+              </a>
+            </li>          
+
+          <li class="nav-item ml-2">
+          {% if not user.has_usable_password %}
+            <li class="nav-item">
+              <a class="border rounded nav-link waves-effect ml-2" href="{% url 'store:register' %}">
+              <span class="clearfix d-sm-inline-block"> SignUp </span>
+              </a>
+            </li> 
+            
+            <li class="nav-item">
+            <a href="{% url 'store:login' %}" class="nav-link border ml-2 border-light rounded waves-effect"
+              target="_self">
+              Login
+            </a>
+            </li>
+
+          {% endif %}
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  <!-- Navbar -->
+
+  {% block content %}
+  {% endblock content %}
+
+    <!--Footer-->
+    <footer class="page-footer text-center bottom container-fluid font-small mt-4 wow fadeIn">
+
+        <hr class="my-4">
+        <h6 class="text-white">Greengo </h6>
+        <!--Copyright-->
+        <div class="footer-copyright py-3">
+            © {% now "Y" %} Copyright: Greengo
+        </div>
+        <!--/.Copyright-->
+
+    </footer>
+    <!--/.Footer-->
+    
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'js/action.js'%}"></script>
+  <script type="text/javascript" src="{% static 'js/mdb/jquery.min.js'%}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'js/mdb/popper.min.js'%}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/mdb/bootstrap.min.js'%}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/mdb/mdb.min.js'%}"></script>
+  
+  
+  <!-- Initializations -->
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+  </script>
+      
+  <script>
+    const footer = document.querySelector("footer")
+    const cart = document.querySelector("#cart")
+    let orders = document.querySelectorAll('.order')
+    let items = document.querySelectorAll('.cart-item')
+    if (orders.length <= 1){
+      footer.classList.add('foot-down')
+    }
+    if(cart.clientHeight <= 222 ){
+      footer.classList.add('foot-down')
+    }else if (cart.clientHeight >= 322 ){
+      footer.classList.remove('foot-down')
+    }
+    
+  </script>
+</body>
+</html>

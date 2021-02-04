@@ -1,0 +1,150 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+    <!--Main layout-->
+    <main class="mt-5 pt-4">
+        <div class="container dark-grey-text mt-5">
+
+            <!--Grid row-->
+            <div class="row wow fadeIn">
+
+                <!--Grid column-->
+                <div class="col-md-6 mb-4">
+
+                    <img src={{item.image.url}} class="w-100" id="product-img" alt="">
+
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-md-6 mb-4">
+
+                    <!--Content-->
+                    <div class="">
+
+                        <div class="mb-3">
+                        <h6> Category </h6>
+                            <a href="">
+                                <span class="badge purple mr-1">{{item.category}}</span>
+                            </a>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6>  </h6>
+                            <a href="">
+                                <span class="badge red mr-1">{{item.get_tag_display}}</span>
+                            </a>
+                        </div>
+                                
+
+                        <p class="lead">
+                            {% if item.discount %}
+                            <span class="mr-1">
+                                <del>${{item.price}}</del>
+                                <span>${{item.discount}}</span>
+                            </span>
+                            {% else %}
+                            <span>${{item.price}}</span> {% endif %}
+                        </p>
+
+                        <p class="lead font-weight-bold">Description</p>
+
+                        <p>
+                            {% if item.description %}
+                                {{item.description}}
+                            {% else %}
+                                There is no description for this item
+                            {% endif %}
+                        </p>
+
+                        <form method="post" class="justify-content-left d-flex">
+                            {% csrf_token %}
+                            <!-- Default input -->
+                            <input type="number" min="1" value="1" name="qty" aria-label="Search" class="form-control" style="width: 100px">
+                            <input class="btn btn-primary btn-md my-0 p-2" type="submit" value=" Add to cart "> 
+
+                        </form>
+
+                    </div>
+                    <!--Content-->
+
+                </div>
+                <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+
+            <hr>
+
+            <h4 class="my-4 text-center h4">More Items Like This</h4>
+               <!--Section: Products v.3-->
+            <section class="text-center mb-4">
+
+                <!--Grid row-->
+                <div class="row wow fadeIn">
+
+                {% for item in item.like_items %}
+                <!--Grid column-->
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <!--Card-->
+                    <div class="card item">
+
+                    <!--Card image-->
+                    
+                        <div class="view overlay">
+                        <a href="{% url 'store:item-detail' item.pk %}" class="grey-text">
+                        {% if item.image.url %}
+                            <img src={{item.image.url}} class="card-img-top" alt="Photo"/>
+                        {% else %}
+                            {{item.image_url}}
+                        {% endif %}
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+                    <!--Card image-->
+
+                    <!--Card content-->
+                    <div class="card-body text-center">
+                        <!--Category & Title-->
+                        <strong>
+                        <a href="{% url 'store:item-detail' item.pk %}" class="dark-grey-text">
+                            <h5> {{ item.name }} </h5>
+                            <h6> {{ item.category}} </h6>
+                            <span class="badge badge-pill bg-danger text-white">{{item.get_tag_display}}</span>
+                        </a>
+                        </strong>
+
+                        <h4 class="font-weight-bold blue-text">
+                        {% if item.discount %}
+                        <strong>${{ item.discount }} </strong>
+                        {% else %}
+                        <strong>${{ item.price }} </strong>
+                        {% endif %}
+                        </h4>
+
+                    </div>
+                    <!--Card content-->
+                    <a class="btn bold btn-blue-grey white-text" href="{% url 'store:add-one-to-cart' item=item.id%}"> 
+                        <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-cart-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                        <path fill-rule="evenodd" d="M8.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 .5-.5z"/>
+                        </svg> Add to cart
+                    </a>
+                    </div>
+                    <!--Card-->
+                
+
+                </div>
+                <!--Grid column-->
+                {% endfor %}
+
+                </div>
+                <!--Grid row-->
+
+            </section>
+            <!--Section: Products v.3-->
+
+        </div>
+    </main>
+{% endblock content %}

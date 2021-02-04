@@ -1,0 +1,126 @@
+{% load tz %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+
+<style>
+    .div{
+        margin: auto;
+        border: 1px solid lavender;
+        padding: .7rem 1rem;
+        border-radius: 5px;
+        max-width: 500px;
+        text-align: center;
+        margin-top: 3em;
+    }
+
+    .shadow{
+        box-shadow: 0px 0 5px gray;
+    }
+
+    .label{
+        color: grey;
+        text-align: center;
+    }
+
+    label{
+        display: block;
+        text-align: center;
+        font-weight: 700;
+        color: grey;
+        margin: .3rem;
+        margin-top: 1rem;
+    }
+
+    .input{
+        border: 1px solid lavender;
+        border-radius: 5px;
+        padding: .5rem;
+    }
+
+    .btn:hover{
+        background: linear-gradient(90deg, #ffa50094, #fa8072d6)
+    }
+
+    .btn{
+        border: 1px solid lavender;
+        border-radius: 5px;
+        margin: auto;
+        display: block;
+        margin-top: 1rem;
+        padding: .7rem 2rem;
+        transition: .3s;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+        background: linear-gradient(90deg, orange, salmon)
+    }
+
+    .link{
+        text-decoration: none;
+        color: teal;
+    }
+    
+
+    .link:hover{
+        color: darkslategreen;
+    }
+
+    .title{
+        text-align: center;
+        font-size: 25px !important;
+        margin: 1rem 0;
+        color: grey;
+    }
+
+    .msg{
+        text-align: center;
+        color: salmon;
+    }
+
+    .security{
+        text-align: center;
+    }
+
+    .pin{
+        max-width: 100px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+</style>
+
+<body>
+
+    <h2 class="title"> G-Pay Checkout </h2>        
+
+    <p class="label mt-3"> Authorize the payment of ${{ amount }} to <span class=" brand">Greengo</span> Ecommerce. </p>
+
+    <div class="div">
+        <h4 class="label"> Transaction id {{ transaction }} </h4>        
+        <form method="post">
+        {% csrf_token %}
+
+        <label for="username"> Pin </label>
+        <input type="password" name="pin" maxlength="4" class="input pin" required />
+
+        <input type="submit" class="btn" value="Pay ${{ amount }}" />
+
+        </form>
+    </div>
+
+    <div class="div ">
+        <p class="label msg"> Please note : Your information is never saved </p>
+        <div class="security">
+
+        </div>
+    </div>
+
+    <h6 class="label link"> Greengo - {% now "Y" %} </h6>
+    
+</body>
+</html>

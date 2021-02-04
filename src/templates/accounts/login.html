@@ -1,0 +1,115 @@
+{% load tz %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+
+<style>
+    .div{
+        margin: auto;
+        border: 1px solid lavender;
+        padding: .7rem 1rem;
+        border-radius: 5px;
+        max-width: 500px;
+        text-align: center;
+        margin-top: 3em;
+    }
+
+    .shadow{
+        box-shadow: 0px 0 5px gray;
+    }
+
+    .label{
+        color: grey;
+        text-align: center;
+    }
+
+    label{
+        display: block;
+        text-align: center;
+        font-weight: 700;
+        color: grey;
+        margin: .3rem;
+        margin-top: 1rem;
+    }
+
+    .input{
+        border: 1px solid lavender;
+        border-radius: 5px;
+        padding: .5rem;
+    }
+
+    .btn{
+        border: 1px solid lavender;
+        border-radius: 5px;
+        margin: auto;
+        display: block;
+        margin-top: 1rem;
+        padding: .7rem 2rem;
+        color: grey;
+        font-weight: 600;
+    }
+
+    .link{
+        text-decoration: none;
+        color: teal;
+    }
+    
+
+    .link:hover{
+        color: darkslategreen;
+    }
+
+    .title{
+        text-align: center;
+        font-size: 25px !important;
+        margin: 1rem 0;
+        color: grey;
+    }
+
+    .msg{
+        text-align: center;
+        color: salmon;
+    }
+
+
+</style>
+
+<body>
+
+    <h2 class="title"> Sign in form </h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class=" msg "> {{ message }} </p>
+        {% endfor %}
+    {% endif %}
+        
+
+    <div class="div shadow">
+        <form method="post">
+        {% csrf_token %}
+
+        <label for="username"> Username or Email </label>
+        <input type="text" name="username" class="input" required />
+
+
+        <label for="password"> Password </label>
+        <input type="password" name="password" class="input" required />
+
+        <input type="submit" class="btn" value="Submit" />
+
+        </form>
+    </div>
+
+    <div class="div ">
+        <p class="label"> No account? <a href="/signup" class="link"> Create One Here </a> </p>
+        {% comment %} <p class="label"> No account? <a href="/signup" class="link"> Create One Here </a> </p> {% endcomment %}
+    </div>
+
+    <h6 class="label link"> Greengo - {% now "Y" %} </h6>
+    
+</body>
+</html>

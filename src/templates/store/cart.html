@@ -1,0 +1,113 @@
+ {% extends 'store/base.html' %}
+ {% load static %}
+ {% block content %}
+
+    <style>
+        .foot-down{
+            width: 100%;
+            position: fixed !important;
+            bottom: 0;
+        }
+    </style>
+
+
+    <div class="container text-center">
+        <div class="text-left">
+            <div id="cart" class=" order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Your cart</span>
+                    <span class="badge badge-secondary badge-pill"> {{ cart.count }} </span>
+                </h4>
+                <ul class="list-group mb-3 cart">
+                    {% for item in cart.items.all %}
+                    <li id="item" class="list-group-item cart-item d-flex justify-content-between lh-condensed">
+                        <div class="cart-item-img-wrapper">
+                            <img src="{{ item.image }}" class="thumbnail" />
+                        </div>
+
+                        <div class="cart-item-details text-left w-100 pl-4 m-auto">
+                            <div id="item-wrapper" class=" text-left">
+                                <div>
+                                    <h6 class="my-0"> {{ item }} </h6>
+                                    <small class="text-muted">Sells @ 
+                                        {% if item.product.discount %}
+                                            ${{ item.product.discount }}
+                                        {% else %}
+                                            ${{ item.price }}
+                                        {% endif %}
+                                </small>
+                                    <span class="text-muted small d-block pr-1">Sub Total ${{ item.sub_total }}</span>
+                                </div>
+                            </div>
+
+                            <div id="control-wrapper">
+                                <div class="btn-group m-0">
+                                    <a class="btn btn-blue " href="{% url 'store:decrease-cart-item' item=item.id %}"> - </a>
+                                    <form method="POST" id="qty" action="{% url 'store:add-to-cart' item=item.id %}">
+                                        {% csrf_token %}
+                                        <input type="number" id="form-qty" name="qty" value={{item.quantity}} title="
+                                    Hit enter when done.
+                                    ">
+                                    </form>
+                                    <a class="btn btn-danger" href="{% url 'store:increase-cart-item' item=item.id %}"> + </a>
+                                    <a class="btn btn-dark" href="{% url 'store:remove-from-cart' item=item.id %}"> &times; </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (USD)</span>
+                        <strong>${{cart.total}}</strong>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <div class="container d-sm-block text-center ">
+
+        <a href="mailto:support@greengo.online" class="blue-grey-text no-shadow pl-3 pr-3 d-inline-block m-sm-auto">
+            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-headset" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 1a5 5 0 0 0-5 5v4.5H2V6a6 6 0 1 1 12 0v4.5h-1V6a5 5 0 0 0-5-5z"/>
+                <path d="M11 8a1 1 0 0 1 1-1h2v4a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V8zM5 8a1 1 0 0 0-1-1H2v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V8z"/>
+                <path fill-rule="evenodd" d="M13.5 8.5a.5.5 0 0 1 .5.5v3a2.5 2.5 0 0 1-2.5 2.5H8a.5.5 0 0 1 0-1h3.5A1.5 1.5 0 0 0 13 12V9a.5.5 0 0 1 .5-.5z"/>
+                <path d="M6.5 14a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1z"/>
+            </svg>
+            Contact Support
+        </a>
+        
+        <a href="{% url 'store:orders' %}" class="blue-grey-text no-shadow mt-3 pl-3 pr-3 d-inline-block m-sm-auto">
+            Your Orders 
+                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-truck" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                </svg>
+        </a>
+
+    </div>
+
+    <hr>
+
+    <div class="text-center mb-3 ">
+        <a id="checkout" class="btn text-white " href="{% url 'store:store' %}">
+                <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-skip-backward" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm7 1.133L1.696 8 7.5 11.367V4.633zm7.5 0L9.196 8 15 11.367V4.633z"/>
+                </svg>
+            Continue Shopping
+        </a>
+
+
+        <a id="checkout" {% if cart.items.all.count > 0 %} href="{% url 'store:checkout' %}" {% endif %} class="btn text-white 
+        {% if cart.items.all.count < 1 %} disabled {% endif %}">
+            Proceed to ckeckout 
+                <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z"/>
+                </svg>
+        </a>
+        
+    </div>
+ {% endblock content %}
